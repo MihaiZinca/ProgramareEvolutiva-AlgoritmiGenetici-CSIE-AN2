@@ -21,7 +21,7 @@ def gen_pop(dim,a,b):
     pop=np.zeros([dim,5])
     for i in range(dim):
         pop[i,:4]=np.random.uniform(a,b,4)
-        pop[i,5]=fitness(pop[i,:4])
+        pop[i,4]=fitness(pop[i,:4])
     return pop
 
 #mutatie neuniforma
@@ -29,7 +29,6 @@ def gen_pop(dim,a,b):
 def m_neuniforma(x,a,b,sigma):
     perturbare=random.uniform(0,sigma)
     y=x+ perturbare
-
     if y<a:
         y=a
     elif y>b:
@@ -45,4 +44,19 @@ def populatie_noua(pop,dim,a,b,sigma,pm):
             r=np.random.uniform(0,1)
             if r<=pm:
                 mpop[i,j]=m_neuniforma(mpop[i,j],a,b,sigma)
-     mpop[i,4]=fitness(mpop[i,4])
+        mpop[i,4]=fitness(mpop[i,:4])
+
+    return mpop
+
+if __name__=="__main__":
+    dim = 10
+    a = 0
+    b = 1
+    sigma = 0.1
+    pm = 0.6
+
+    pop = gen_pop(dim, a, b)
+    print("Pop initial:\n", pop)
+
+    mpop = populatie_noua(pop, dim, a, b, sigma, pm)
+    print("\nPop dupa mutatie:\n", mpop)
